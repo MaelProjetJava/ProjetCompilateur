@@ -72,6 +72,14 @@ mult_exp:
      { binary_exp $1 MOD $3 }
 ;
 
+add_exp:
+  mult_exp
+    { $1 }
+| add_exp ADD mult_exp
+    { binary_exp $1 ADD $3 }
+| add_exp SUB mult_exp
+    { binary_exp $1 SUB $3 }
+;
 
 unary_op:
   FST
@@ -111,7 +119,7 @@ primary_exp_list_as_mlexp:
 ;
 
 mlexp:
-  mult_exp
+  add_exp
     { $1 }
 | IF mlexp THEN mlexp ELSE mlexp
     { Cond($2, $4, $6) }
