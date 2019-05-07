@@ -39,6 +39,5 @@ parser.cmo: parser.ml parser.cmi miniml.cmo
 
 
 .PHONY: clean
-
 clean: 
-	rm -f lexer.ml parser.ml parser.output *.mli *.cmi *.cmo
+	rm -f comp lexer.ml parser.ml parser.output *.mli *.cmi *.cmo
