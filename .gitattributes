@@ -1,0 +1,6 @@
+*	text=auto
+*.ml	text
+*.mly	text
+*.mll	text
+*.txt	text
+Makefile	text
