@@ -28,6 +28,13 @@ and code = instr list
 type stackelem = Val of value | Cod of code
 
 
+let rec chop n l =
+	if n = 0 then
+		l
+	else
+		chop (n - 1) (List.tl l)
+;;
+
 let rec exec = function
   (PairV (x,y), (PrimInstr (UnOp Fst))::inslist, stack, fds) -> exec (x, inslist, stack, fds)
 | (PairV (x,y), (PrimInstr (UnOp Snd))::inslist, stack, fds) -> exec (y, inslist, stack, fds)
@@ -64,6 +71,10 @@ let rec exec = function
 
 | (BoolV (true), (Branch (t, e))::inslist, (Val x)::stack, fds) -> (x, t, (Cod inslist)::stack, fds)
 | (BoolV (false), (Branch (t, e))::inslist, (Val x)::stack, fds) -> (x, e, (Cod inslist)::stack, fds)
+
+| (x, (Call (f))::inslist, stack, fds) -> (x, (List.assoc f fds)@inslist, stack, fds)
+| (x, (AddDefs (defs))::inslist, stack, fds) -> (x, inslist, stack, defs@fds)
+| (x, (RmDefs(n))::inslist, stack, fds) -> (x, inslist, stack, chop n fds)
 
 | config -> config
 ;;
