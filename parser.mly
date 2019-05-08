@@ -81,13 +81,6 @@ add_exp:
     { binary_exp $1 SUB $3 }
 ;
 
-unary_op:
-  FST
-  { Fst}
-| SND
-  { Snd}
-;
-
 primary_exp:
   IDENTIFIER
     { Var($1) }
@@ -96,10 +89,27 @@ primary_exp:
  | INTCONSTANT
      { Int($1) }
    /* OMITTED: string-literal */
- | unary_op
-     { PrimOp (UnOp($1)) }
+ | pair_exp
+     { $1 }
  | LPAREN mlexp RPAREN
      { $2 }
+;
+
+pair_exp:
+  LPAREN mlexp COMMA mlexp RPAREN
+    { Pair ($2, $4) }
+;
+
+unary_op:
+  FST
+  { Fst}
+| SND
+  { Snd}
+;
+
+unary_exp:
+  unary_op pair_exp
+    { App (PrimOp (UnOp $1), $2) }
 ;
 
 primary_exp_list:
@@ -120,6 +130,8 @@ primary_exp_list_as_mlexp:
 
 mlexp:
   add_exp
+    { $1 }
+| unary_exp
     { $1 }
 | IF mlexp THEN mlexp ELSE mlexp
     { Cond($2, $4, $6) }
