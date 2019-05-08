@@ -45,6 +45,13 @@ let rec exec = function
 | (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack) -> exec (BoolV (x < y), inslist, stack)
 | (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack) -> exec (BoolV (x <> y), inslist, stack)
 
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCeq)))::inslist, stack) -> exec (BoolV (x = y), inslist, stack)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCge)))::inslist, stack) -> exec (BoolV (x >= y), inslist, stack)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCgt)))::inslist, stack) -> exec (BoolV (x > y), inslist, stack)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCle)))::inslist, stack) -> exec (BoolV (x <= y), inslist, stack)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack) -> exec (BoolV (x < y), inslist, stack)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack) -> exec (BoolV (x <> y), inslist, stack)
+
 | (x, (Quote v)::inslist, stack) -> (v, inslist, stack)
 | (x, Cons::inslist, (Val y)::stack) -> exec (PairV (x, y), inslist, stack)
 
