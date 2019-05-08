@@ -67,3 +67,29 @@ let rec exec = function
 
 | config -> config
 ;;
+
+let rec access (v : var)  = function
+  x::envt ->
+	if v = x then
+		[PrimInstr (UnOp (Snd))]
+	else
+		(PrimInstr (UnOp (Fst)))::(access v envt)
+| _ -> failwith "La variable n'est pas définie !"
+;;
+
+let rec compile env = function
+  Bool(b) -> [Quote(BoolV(b))]
+| Int(i) -> [Quote(IntV(i))]
+| Var(v) -> (access v env)
+| Pair (e1, e2) -> [Push] @ (compile env e1) @ [Swap] @ (compile env e2) @ [Cons]
+| App (PrimOp (p), e) -> (compile env e) @ [PrimInstr (p)]
+| Fn (v, e) -> [Cur ((compile (v::env) e) @ [Return])]
+| App (f, a) -> [Push] @ (compile env f) @ [Swap] @ (compile env a) @ [Cons; App]
+| Cond (i, t, e) -> [Push] @ (compile env i) @ [Branch ((compile env t) @ [Return], (compile env e) @ [Return])]
+| Fix (_, _) -> failwith "Not implemented."
+| _ -> failwith "Syntaxe invalide !"
+;;
+
+let compile_prog = function
+	Prog (_, t) -> compile [] t
+;;
