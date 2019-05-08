@@ -88,6 +88,42 @@ unary_op:
   { Snd}
 ;
 
+compar_oper:
+  EQ
+    { EQ }
+| NE
+    { NE }
+| GE
+    { GE }
+| GT
+    { GT }
+| LE
+    { LE }
+| LT
+    { LT }
+;
+
+compar_exp:
+  add_exp
+    { $1 }
+| compar_exp compar_oper add_exp
+    { binary_exp $1 $2 $3 }
+;
+
+bland_exp:
+  compar_exp
+    { $1 }
+| bland_exp BLAND compar_exp
+    { Cond($1, $3, Bool(false)) }
+;
+
+blor_exp:
+  bland_exp
+    { $1 }
+| blor_exp BLOR bland_exp
+    { Cond($1, Bool(true), $3) }
+;
+
 primary_exp:
   IDENTIFIER
     { Var($1) }
@@ -126,7 +162,7 @@ primary_exp_list_as_mlexp:
 ;
 
 mlexp:
-  add_exp
+  blor_exp
     { $1 }
 | IF mlexp THEN mlexp ELSE mlexp
     { Cond($2, $4, $6) }
