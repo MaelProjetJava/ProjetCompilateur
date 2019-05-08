@@ -29,41 +29,41 @@ type stackelem = Val of value | Cod of code
 
 
 let rec exec = function
-  (PairV (x,y), (PrimInstr (UnOp Fst))::inslist, stack) -> exec (x, inslist, stack)
-| (PairV (x,y), (PrimInstr (UnOp Snd))::inslist, stack) -> exec (y, inslist, stack)
+  (PairV (x,y), (PrimInstr (UnOp Fst))::inslist, stack, fds) -> exec (x, inslist, stack, fds)
+| (PairV (x,y), (PrimInstr (UnOp Snd))::inslist, stack, fds) -> exec (y, inslist, stack, fds)
 
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAadd)))::inslist, stack) -> exec (IntV (x + y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAsub)))::inslist, stack) -> exec (IntV (x - y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAmul)))::inslist, stack) -> exec (IntV (x * y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAdiv)))::inslist, stack) -> exec (IntV (x / y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAmod)))::inslist, stack) -> exec (IntV (x mod y), inslist, stack)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAadd)))::inslist, stack, fds) -> exec (IntV (x + y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAsub)))::inslist, stack, fds) -> exec (IntV (x - y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAmul)))::inslist, stack, fds) -> exec (IntV (x * y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAdiv)))::inslist, stack, fds) -> exec (IntV (x / y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BArith BAmod)))::inslist, stack, fds) -> exec (IntV (x mod y), inslist, stack, fds)
 
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCeq)))::inslist, stack) -> exec (BoolV (x = y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCge)))::inslist, stack) -> exec (BoolV (x >= y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCgt)))::inslist, stack) -> exec (BoolV (x > y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCle)))::inslist, stack) -> exec (BoolV (x <= y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack) -> exec (BoolV (x < y), inslist, stack)
-| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack) -> exec (BoolV (x <> y), inslist, stack)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCeq)))::inslist, stack, fds) -> exec (BoolV (x = y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCge)))::inslist, stack, fds) -> exec (BoolV (x >= y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCgt)))::inslist, stack, fds) -> exec (BoolV (x > y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCle)))::inslist, stack, fds) -> exec (BoolV (x <= y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack, fds) -> exec (BoolV (x < y), inslist, stack, fds)
+| (PairV (IntV (x), IntV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack, fds) -> exec (BoolV (x <> y), inslist, stack, fds)
 
-| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCeq)))::inslist, stack) -> exec (BoolV (x = y), inslist, stack)
-| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCge)))::inslist, stack) -> exec (BoolV (x >= y), inslist, stack)
-| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCgt)))::inslist, stack) -> exec (BoolV (x > y), inslist, stack)
-| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCle)))::inslist, stack) -> exec (BoolV (x <= y), inslist, stack)
-| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack) -> exec (BoolV (x < y), inslist, stack)
-| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack) -> exec (BoolV (x <> y), inslist, stack)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCeq)))::inslist, stack, fds) -> exec (BoolV (x = y), inslist, stack, fds)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCge)))::inslist, stack, fds) -> exec (BoolV (x >= y), inslist, stack, fds)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCgt)))::inslist, stack, fds) -> exec (BoolV (x > y), inslist, stack, fds)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCle)))::inslist, stack, fds) -> exec (BoolV (x <= y), inslist, stack, fds)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack, fds) -> exec (BoolV (x < y), inslist, stack, fds)
+| (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack, fds) -> exec (BoolV (x <> y), inslist, stack, fds)
 
-| (x, (Quote v)::inslist, stack) -> (v, inslist, stack)
-| (x, Cons::inslist, (Val y)::stack) -> exec (PairV (x, y), inslist, stack)
+| (x, (Quote v)::inslist, stack, fds) -> (v, inslist, stack, fds)
+| (x, Cons::inslist, (Val y)::stack, fds) -> exec (PairV (x, y), inslist, stack, fds)
 
-| (x, Push::inslist, stack) -> (x, inslist, (Val (x))::stack)
-| (x, Swap::inslist, (Val y)::stack) -> (y, inslist, (Val x)::stack)
+| (x, Push::inslist, stack, fds) -> (x, inslist, (Val (x))::stack, fds)
+| (x, Swap::inslist, (Val y)::stack, fds) -> (y, inslist, (Val x)::stack, fds)
 
-| (x, (Cur code)::inslist, stack) -> (ClosureV (code, x), inslist, stack)
-| (PairV (ClosureV (code, value), arg), App::inslist, stack) -> (PairV (value, arg), code, (Cod inslist)::stack)
-| (x, Return::inslist, (Cod newInsList)::stack) -> (x, newInsList, stack)
+| (x, (Cur code)::inslist, stack, fds) -> (ClosureV (code, x), inslist, stack, fds)
+| (PairV (ClosureV (code, value), arg), App::inslist, stack, fds) -> (PairV (value, arg), code, (Cod inslist)::stack, fds)
+| (x, Return::inslist, (Cod newInsList)::stack, fds) -> (x, newInsList, stack, fds)
 
-| (BoolV (true), (Branch (t, e))::inslist, (Val x)::stack) -> (x, t, (Cod inslist)::stack)
-| (BoolV (false), (Branch (t, e))::inslist, (Val x)::stack) -> (x, e, (Cod inslist)::stack)
+| (BoolV (true), (Branch (t, e))::inslist, (Val x)::stack, fds) -> (x, t, (Cod inslist)::stack, fds)
+| (BoolV (false), (Branch (t, e))::inslist, (Val x)::stack, fds) -> (x, e, (Cod inslist)::stack, fds)
 
 | config -> config
 ;;
