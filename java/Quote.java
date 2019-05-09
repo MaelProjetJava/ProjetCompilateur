@@ -1,24 +1,15 @@
 import java.util.*;
 
-class Quote extends Instr {
-    Value v;
+public class Quote implements Instr {
+	private Value value;
 
+	public Quote (Value value) {
+		this.value = value;
+	}
 
-    Value get_value() {
-        return v;
-    }
-
-    void set_value(Value nv) {
-        v = nv;
-    }
-
-    /* Constructors */
-    public Quote (Value vl) {
-        v = vl;
-    }
-
-    void exec_instr(Config cf) {
-        cf.set_value(v);
-        cf.get_code().pop();
-    }
+	@Override
+	public void execute(Config config) {
+		config.setValue(v);
+		config.nextInstruction();
+	}
 }

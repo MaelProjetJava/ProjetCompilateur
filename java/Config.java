@@ -1,51 +1,57 @@
 import java.util.*;
 
-class Config extends Object {
-    Value v;
-    LinkedList<Instr> c;
-    LinkedList<StackElem> s;
+public class Config {
+	private Value value;
+	private List<Instr> code;
+	private List<StackElem> stack;
 
-    Value get_value() {
-        return v;
-    }
-    LinkedList<Instr> get_code() {
-        return c;
-    }
-    LinkedList<StackElem> get_stack() {
-        return s;
-    }
+	public Config (Value value, List<Instr> code, List<StackElem> stack) {
+		this.value = value;
+		this.code = code;
+		this.stack = stack;
+	}
 
-    void set_value(Value nv) {
-        v = nv;
-    }
-    void set_code(LinkedList<Instr> nc) {
-        c = nc;
-    }
-    void get_stack(LinkedList<StackElem> ns) {
-        s = ns;
-    }
+	public Value getValue() {
+		return value;
+	}
 
-    /* Constructors */
-    public Config (Value vl, LinkedList<Instr> cd, LinkedList<StackElem> se) {
-        v = vl;
-        c = cd;
-        s = se;
-    }
+	public void setValue(Value value) {
+		this.value = value;
+	}
 
+	List<Instr> getCode() {
+		return code;
+	}
 
-    // one-step execution
-    boolean exec_step() {
-        // to be implemented
-        return true;
-    }
+	public void setCode(List<Instr> code) {
+		this.code = code;
+	}
 
-    // run to completion
-    void exec() {
-        // to be implemented
-    }
+	List<StackElem> getStack() {
+		return stack;
+	}
 
-    // run for n steps
-    void step(int n) {
-        // to be implemented
-    }
+	public void setStack(List<StackElem> stack) {
+		this.stack = stack;
+	}
+
+	public void nextInstruction() {
+		code.remove(0);
+	}
+
+	// one-step execution
+	public boolean exec_step() {
+		// to be implemented
+		return true;
+	}
+
+	// run to completion
+	public void exec() {
+		// to be implemented
+	}
+
+	// run for n steps
+	public void step(int n) {
+		// to be implemented
+	}
 }
