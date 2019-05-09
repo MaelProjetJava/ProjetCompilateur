@@ -1,6 +1,7 @@
 *.cmo
 *.cmi
 *.mli
+*.class
 /comp
 /lexer.ml
 /parser.ml
