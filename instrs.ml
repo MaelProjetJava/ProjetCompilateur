@@ -61,22 +61,22 @@ let rec exec = function
 | (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BClt)))::inslist, stack, fds) -> exec (BoolV (x < y), inslist, stack, fds)
 | (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack, fds) -> exec (BoolV (x <> y), inslist, stack, fds)
 
-| (x, (Quote v)::inslist, stack, fds) -> (v, inslist, stack, fds)
+| (x, (Quote v)::inslist, stack, fds) -> exec (v, inslist, stack, fds)
 | (x, Cons::inslist, (Val y)::stack, fds) -> exec (PairV (x, y), inslist, stack, fds)
 
-| (x, Push::inslist, stack, fds) -> (x, inslist, (Val (x))::stack, fds)
-| (x, Swap::inslist, (Val y)::stack, fds) -> (y, inslist, (Val x)::stack, fds)
+| (x, Push::inslist, stack, fds) -> exec (x, inslist, (Val (x))::stack, fds)
+| (x, Swap::inslist, (Val y)::stack, fds) -> exec (y, inslist, (Val x)::stack, fds)
 
-| (x, (Cur code)::inslist, stack, fds) -> (ClosureV (code, x), inslist, stack, fds)
-| (PairV (ClosureV (code, value), arg), App::inslist, stack, fds) -> (PairV (value, arg), code, (Cod inslist)::stack, fds)
-| (x, Return::inslist, (Cod newInsList)::stack, fds) -> (x, newInsList, stack, fds)
+| (x, (Cur code)::inslist, stack, fds) -> exec (ClosureV (code, x), inslist, stack, fds)
+| (PairV (ClosureV (code, value), arg), App::inslist, stack, fds) -> exec (PairV (value, arg), code, (Cod inslist)::stack, fds)
+| (x, Return::inslist, (Cod newInsList)::stack, fds) -> exec (x, newInsList, stack, fds)
 
-| (BoolV (true), (Branch (t, e))::inslist, (Val x)::stack, fds) -> (x, t, (Cod inslist)::stack, fds)
-| (BoolV (false), (Branch (t, e))::inslist, (Val x)::stack, fds) -> (x, e, (Cod inslist)::stack, fds)
+| (BoolV (true), (Branch (t, e))::inslist, (Val x)::stack, fds) -> exec (x, t, (Cod inslist)::stack, fds)
+| (BoolV (false), (Branch (t, e))::inslist, (Val x)::stack, fds) -> exec (x, e, (Cod inslist)::stack, fds)
 
-| (x, (Call (f))::inslist, stack, fds) -> (x, (List.assoc f fds)@inslist, stack, fds)
-| (x, (AddDefs (defs))::inslist, stack, fds) -> (x, inslist, stack, defs@fds)
-| (x, (RmDefs(n))::inslist, stack, fds) -> (x, inslist, stack, chop n fds)
+| (x, (Call (f))::inslist, stack, fds) -> exec (x, (List.assoc f fds)@inslist, stack, fds)
+| (x, (AddDefs (defs))::inslist, stack, fds) -> exec (x, inslist, stack, defs@fds)
+| (x, (RmDefs(n))::inslist, stack, fds) -> exec (x, inslist, stack, chop n fds)
 
 | config -> config
 ;;
