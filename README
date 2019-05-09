@@ -1,0 +1,41 @@
+Travail effectué:
+=================
+
+Travail manquant:
+=================
+
+
+Difficultés rencontrées:
+========================
+
+- L'arrivé tardive du sujet du projet a limité le temps disponible pour le
+  réaliser.
+- Conflit shift/reduce et reduce/reduce sur le lexer LR difficile à
+  résoudre dans la grammaire.
+
+
+Tests effectués:
+================
+
+Tous les tests du répertoire caml/Tests ont été compilés et exécutés à
+l'aide du compilateur Caml -> CAM et du simulateur CAM en Caml et sont tous
+fonctionnels.
+
+Éxecuté les tests:
+==================
+
+- Tout d'abord il faut compiler tous les fichiers Caml:
+
+cd caml && make 
+
+- Ensuite ouvrir un interpréteur ocaml dans le dossier caml:
+
+ocaml
+
+- Puis entrer dans l'interpréteur:
+
+#use "use.ml";;
+
+- Pour tester le test "Tests/test.ml":
+
+
