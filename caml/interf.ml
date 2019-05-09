@@ -34,10 +34,8 @@ let parse infile =
 
 
 let generate infile outfile = 
-  (*
   let outf = open_out outfile in
   let str = Instrs.print_gen_class_to_java (Instrs.compile_prog (parse infile)) in
   output_string outf str ; flush outf;
-  *)
   print_string "finished\n"
 

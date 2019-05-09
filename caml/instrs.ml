@@ -124,3 +124,14 @@ let rec compile env = function
 let compile_prog = function
 	Prog (_, t) -> compile [] t
 ;;
+
+let rec print_gen_class_to_java cam_code =
+	let rec helper = function
+		instr::cam_code ->
+		| _ -> "LLE.empty()"
+	in
+		"import java.util.*;
+public class Gen {
+public static LinkedList<Instr> code =\n" ^
+		(helper cam_code) ^ ";"
+		"\n}"
