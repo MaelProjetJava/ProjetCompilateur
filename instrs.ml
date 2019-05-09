@@ -62,7 +62,7 @@ let rec exec = function
 | (PairV (BoolV (x), BoolV (y)), (PrimInstr (BinOp (BCompar BCne)))::inslist, stack, fds) -> exec (BoolV (x <> y), inslist, stack, fds)
 
 | (x, (Quote v)::inslist, stack, fds) -> exec (v, inslist, stack, fds)
-| (x, Cons::inslist, (Val y)::stack, fds) -> exec (PairV (x, y), inslist, stack, fds)
+| (x, Cons::inslist, (Val y)::stack, fds) -> exec (PairV (y, x), inslist, stack, fds)
 
 | (x, Push::inslist, stack, fds) -> exec (x, inslist, (Val (x))::stack, fds)
 | (x, Swap::inslist, (Val y)::stack, fds) -> exec (y, inslist, (Val x)::stack, fds)
