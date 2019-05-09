@@ -27,6 +27,8 @@ and code = instr list
   
 type stackelem = Val of value | Cod of code
 
+type envelem = EVar of var | EDef of var list;;
+
 
 let rec chop n l =
 	if n = 0 then
@@ -79,13 +81,26 @@ let rec exec = function
 | config -> config
 ;;
 
-let rec access (v : var)  = function
-  x::envt ->
-	if v = x then
-		[PrimInstr (UnOp (Snd))]
-	else
-		(PrimInstr (UnOp (Fst)))::(access v envt)
-| _ -> failwith "La variable n'est pas définie !"
+let rec contains v = function
+  x::l -> (v = x) || (contains v l)
+| _ -> false
+;;
+
+let access (v : var) env =
+	let rec helper fstsnd_list = function
+		(EVar x)::envt ->
+			if v = x then
+				fstsnd_list@[PrimInstr (UnOp (Snd))]
+			else
+				helper (fstsnd_list@[PrimInstr (UnOp (Fst))]) envt
+		| (EDef x_list)::envt ->
+			if contains v x_list then
+				[Call v]
+			else
+				helper (fstsnd_list@[PrimInstr (UnOp (Fst))]) envt
+		| _ -> failwith "La variable n'est pas définie !"
+	in
+		helper [] env
 ;;
 
 let rec compile env = function
@@ -94,10 +109,15 @@ let rec compile env = function
 | Var(v) -> (access v env)
 | Pair (e1, e2) -> [Push] @ (compile env e1) @ [Swap] @ (compile env e2) @ [Cons]
 | App (PrimOp (p), e) -> (compile env e) @ [PrimInstr (p)]
-| Fn (v, e) -> [Cur ((compile (v::env) e) @ [Return])]
+| Fn (v, e) -> [Cur ((compile (EVar(v)::env) e) @ [Return])]
 | App (f, a) -> [Push] @ (compile env f) @ [Swap] @ (compile env a) @ [Cons; App]
 | Cond (i, t, e) -> [Push] @ (compile env i) @ [Branch ((compile env t) @ [Return], (compile env e) @ [Return])]
-| Fix (_, _) -> failwith "Not implemented."
+| Fix (defs, e) ->
+	let new_env = (EDef (List.map fst defs))::env in
+		let dc = List.map (fun (v, expr) -> (v, compile new_env expr)) defs in
+			let ec = compile new_env e
+	in
+		[AddDefs dc] @ ec @  [RmDefs (List.length dc)]
 | _ -> failwith "Syntaxe invalide !"
 ;;
 
