@@ -1,9 +1,7 @@
-class NullV extends Value {
+public class NullV implements Value {
 
-    /* Constructors */
-    public NullV () {
-    }
-    void print_value() {
-        System.out.print("Null");
-    }
+	@Override
+	public String toString() {
+		return "Null";
+	}
 }

@@ -1,22 +1,18 @@
-import java.util.*;
 
-class IntV extends Value {
-    /* Fields */
-    int iv;
+public class IntV implements Value {
 
-    /* Constructors */
-    public IntV (int i) {
-	iv = i;
-    }
+	private int value;
 
-    int get_int () {
-        return iv;
-    }
-    void set_int (int i) {
-        iv = i;
-    }
+	public IntV(int i) {
+		value = i;
+	}
 
-    void print_value() {
-        System.out.print(iv);
-    }
+	public int getValue() {
+		return value;
+	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(value);
+	}
 }
