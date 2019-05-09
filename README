@@ -1,0 +1,56 @@
+Travail effectué:
+=================
+- Modification de la grammaire: toutes les modifications obligatoires ont été
+  effectués et sont fonctionelles:
+	- addition/soustraction
+	- comparaisons
+	- expressions booléennes
+	- paires
+- Compilateur Caml vers liste d'instructions CAM:
+	COMPLET, y compris fonctions récursives
+- Simulateur CAM en Caml:
+	COMPLET, y compris fonctions récursives
+- Fonctions récursives (sauf dans le simulateur Java)
+
+Travail manquant:
+=================
+- Simulateur CAM en Java:
+	pratiquement vide, il y a un début de code mais c'est
+	inutilisable.
+- Génération du fichier Gen.java à partir de la liste d'instructions CAM:
+	non effectué
+
+Difficultés rencontrées:
+========================
+
+- L'arrivé tardive du sujet du projet a limité le temps disponible pour le
+  réaliser.
+- Conflit shift/reduce et reduce/reduce sur le lexer LR difficile à
+  à comprendre et à résoudre dans la grammaire.
+
+
+Tests effectués:
+================
+
+Tous les tests du répertoire caml/Tests ont été compilés et exécutés à
+l'aide du compilateur Caml -> CAM et du simulateur CAM en Caml et sont tous
+fonctionnels.
+
+Éxecuter les tests:
+===================
+
+- Tout d'abord il faut compiler tous les fichiers Caml:
+
+cd caml && make clean && make
+
+- Ensuite ouvrir un interpréteur ocaml dans le dossier caml:
+
+ocaml
+
+- Puis entrer dans l'interpréteur:
+
+#use "use.ml";;
+
+- Pour tester le fichier "Tests/ackermann_iter.ml":
+
+exec (NullV, (compile_prog (parse "Tests/ackermann_iter.ml")), [], []);;
